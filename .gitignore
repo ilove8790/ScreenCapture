@@ -52,5 +52,4 @@ config.env
 logs/
 
 # Local Configurations
-matools.ini
 .antigravitycli/

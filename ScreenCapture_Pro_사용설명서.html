@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScrCapture Pro 사용 설명서</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --bg:        #0d1c1f;
+      --bg2:       #122a30;
+      --bg3:       #1a3a42;
+      --card:      #152d32;
+      --border:    #1e4a52;
+      --teal:      #00bcd4;
+      --teal2:     #1de9b6;
+      --teal-dim:  rgba(0,188,212,0.15);
+      --red:       #ef5350;
+      --amber:     #ffb300;
+      --green:     #26a69a;
+      --text:      #dfe1e5;
+      --text-dim:  #8a9ba0;
+      --kbd-bg:    #0d2b30;
+      --kbd-border:#007c8a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      padding: 0 16px 60px;
+    }
+
+    /* ── 헤더 ── */
+    header {
+      background: linear-gradient(135deg, #0a1e22 0%, #1a4a52 100%);
+      border-bottom: 2px solid var(--teal);
+      padding: 48px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,188,212,.18) 0%, transparent 70%);
+    }
+    header .icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+    header h1 {
+      font-size: 2rem; font-weight: 700;
+      background: linear-gradient(90deg, var(--teal), var(--teal2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p {
+      margin-top: 12px; color: var(--text-dim); font-size: .95rem; max-width: 600px; margin-inline: auto;
+    }
+    .badge {
+      display: inline-block; margin-top: 16px;
+      background: var(--teal-dim); border: 1px solid var(--teal);
+      color: var(--teal2); border-radius: 20px;
+      padding: 4px 16px; font-size: .8rem; font-weight: 500;
+    }
+
+    /* ── 레이아웃 ── */
+    .container { max-width: 860px; margin: 0 auto; }
+
+    section { margin-top: 48px; }
+
+    h2 {
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--teal2);
+      border-left: 4px solid var(--teal);
+      padding-left: 14px;
+      margin-bottom: 20px;
+    }
+    h3 {
+      font-size: 1rem; font-weight: 700;
+      color: var(--teal);
+      margin: 24px 0 8px;
+    }
+    h4 {
+      font-size: .95rem; font-weight: 600;
+      color: var(--amber);
+      margin: 20px 0 8px;
+    }
+    p { margin-bottom: 10px; color: var(--text-dim); }
+    p strong, li strong { color: var(--text); }
+
+    /* ── 단축키 카드 그리드 ── */
+    .hotkey-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .hotkey-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex; flex-direction: column; gap: 6px;
+      transition: border-color .2s, transform .2s;
+    }
+    .hotkey-card:hover { border-color: var(--teal); transform: translateY(-2px); }
+    .hotkey-card .keys {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .85rem; font-weight: 600;
+      color: var(--teal2);
+      letter-spacing: .04em;
+    }
+    .hotkey-card .desc { font-size: .88rem; color: var(--text); }
+    .hotkey-card .save {
+      font-size: .75rem; color: var(--text-dim);
+      background: var(--bg); border-radius: 4px;
+      padding: 2px 8px; align-self: flex-start;
+    }
+    .hotkey-card.special { border-color: rgba(239,83,80,.4); }
+    .hotkey-card.special .keys { color: #ff7043; }
+
+    /* ── 테이블 ── */
+    table {
+      width: 100%; border-collapse: collapse;
+      margin: 12px 0 4px; font-size: .88rem;
+    }
+    thead tr { background: var(--bg3); }
+    th {
+      text-align: left; padding: 10px 14px;
+      color: var(--teal); font-weight: 600;
+      border-bottom: 2px solid var(--border);
+    }
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-dim);
+      vertical-align: top;
+    }
+    tr:hover td { background: rgba(0,188,212,.04); }
+    td strong { color: var(--text); }
+
+    /* ── kbd ── */
+    kbd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .8rem;
+      background: var(--kbd-bg);
+      border: 1px solid var(--kbd-border);
+      border-radius: 5px;
+      padding: 1px 7px;
+      color: var(--teal2);
+      white-space: nowrap;
+    }
+
+    /* ── callout ── */
+    .callout {
+      border-left: 3px solid var(--teal);
+      background: var(--teal-dim);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 16px;
+      margin: 12px 0;
+      font-size: .88rem;
+      color: var(--text);
+    }
+    .callout.warn {
+      border-color: var(--red);
+      background: rgba(239,83,80,.1);
+    }
+    .callout.tip {
+      border-color: var(--teal2);
+      background: rgba(29,233,182,.08);
+    }
+    .callout.amber {
+      border-color: var(--amber);
+      background: rgba(255,179,0,.08);
+    }
+
+    /* ── 스텝 박스 ── */
+    .step-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin: 10px 0;
+    }
+    .step-box .step-title {
+      font-weight: 700; font-size: .9rem;
+      color: var(--teal2); margin-bottom: 8px;
+    }
+    .step-box ul { padding-left: 18px; }
+    .step-box li { color: var(--text-dim); font-size: .88rem; margin-bottom: 4px; }
+
+    /* ── 해제 방법 박스 ── */
+    .clear-box {
+      background: rgba(239,83,80,.08);
+      border: 1px solid rgba(239,83,80,.35);
+      border-radius: 10px; padding: 18px 20px; margin: 14px 0;
+    }
+    .clear-box h4 { color: var(--red); margin-top: 0; }
+
+    /* ── 특장점 카드 ── */
+    .feature-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+    .feature-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .feature-item .num {
+      background: var(--teal-dim);
+      border: 1px solid var(--teal);
+      color: var(--teal2);
+      border-radius: 50%; width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700; flex-shrink: 0;
+    }
+    .feature-item .body strong { color: var(--text); font-size: .9rem; }
+    .feature-item .body p { margin: 4px 0 0; font-size: .85rem; }
+
+    /* ── FPS 토글 ── */
+    .fps-row { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+    .fps-card {
+      flex: 1; min-width: 160px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 16px;
+    }
+    .fps-card .fps-label { font-size: .95rem; font-weight: 700; color: var(--teal2); }
+    .fps-card .fps-desc { font-size: .82rem; color: var(--text-dim); margin-top: 4px; }
+
+    /* ── 구분선 ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+    ul { padding-left: 20px; }
+    li { color: var(--text-dim); margin-bottom: 4px; font-size: .9rem; }
+
+    footer {
+      text-align: center; margin-top: 60px;
+      color: var(--text-dim); font-size: .8rem;
+      border-top: 1px solid var(--border); padding-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="icon">📸</span>
+  <h1>ScrCapture Pro 사용 설명서</h1>
+  <p>클라우드(VDI), 듀얼 모니터 등 복잡한 업무 환경에서도<br>가장 빠르고 정확하게 화면을 캡처하고 녹화하는 <strong>전문가용 캡처 리모컨</strong></p>
+  <span class="badge">Global Hotkey 지원 · 클립보드 자동 복사 · MP4 / GIF 녹화</span>
+</header>
+
+<div class="container">
+
+<!-- ══ 단축키 목록 ══ -->
+<section>
+  <h2>📌 단축키 전체 목록 (Global Hotkey)</h2>
+  <div class="callout">
+    프로그램 창이 숨겨져 있거나 다른 창 작업 중에도 <strong>모든 단축키는 항상 작동</strong>합니다.
+  </div>
+
+  <div class="hotkey-grid">
+    <div class="hotkey-card">
+      <div class="keys">Ctrl + 0</div>
+      <div class="desc">리모컨 창 표시 / 숨김 토글</div>
+      <div class="save">—</div>
+    </div>
+    <div class="hotkey-card">
+      <div class="keys">Ctrl + 1</div>
+      <div class="desc"><strong>전체 화면</strong> 캡처 (다중 모니터 포함)</div>
+      <div class="save">📋 클립보드</div>
+    </div>
+    <div class="hotkey-card">
+      <div class="keys">Ctrl + 2</div>
+      <div class="desc"><strong>현재 활성화된 창</strong> 캡처</div>
+      <div class="save">📋 클립보드</div>
+    </div>
+    <div class="hotkey-card">
+      <div class="keys">Ctrl + 3</div>
+      <div class="desc"><strong>영역 선택</strong> 모드 진입 / 선택 확정</div>
+      <div class="save">📋 클립보드</div>
+    </div>
+    <div class="hotkey-card special">
+      <div class="keys">Ctrl + 좌클릭</div>
+      <div class="desc"><strong>고정 영역 즉시 재캡처</strong> (빨간 테두리 영역)</div>
+      <div class="save">📋 클립보드</div>
+    </div>
+    <div class="hotkey-card">
+      <div class="keys">Ctrl + 4</div>
+      <div class="desc">마지막 캡처 이미지를 <strong>PNG 파일</strong>로 저장</div>
+      <div class="save">💾 Screenshots/</div>
+    </div>
+    <div class="hotkey-card">
+      <div class="keys">Ctrl + 5</div>
+      <div class="desc">고정 영역 <strong>MP4 녹화</strong> 시작 / 정지</div>
+      <div class="save">🎬 Recordings/</div>
+    </div>
+    <div class="hotkey-card">
+      <div class="keys">Ctrl + 6</div>
+      <div class="desc">고정 영역 <strong>GIF 녹화</strong> 시작 / 정지</div>
+      <div class="save">🎞️ Recordings/</div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ══ 기능 상세 ══ -->
+<section>
+  <h2>🔷 기능 상세 설명</h2>
+
+  <h3>1. Ctrl + 1 — 전체 화면 캡처</h3>
+  <p>전체 화면(다중 모니터 포함)을 한 번에 캡처하여 클립보드에 복사합니다.<br>
+  캡처 직후 <kbd>Ctrl+V</kbd>로 어디든 즉시 붙여넣기 가능합니다.</p>
+
+  <h3>2. Ctrl + 2 — 활성화 창 캡처</h3>
+  <p>현재 포커스가 맞춰진 창의 영역만 정밀하게 오려 클립보드에 복사합니다.</p>
+
+  <h3>3. Ctrl + 3 — 영역 선택 (빨간 테두리 설정)</h3>
+  <p>영역 선택은 <strong>두 단계</strong>로 동작합니다.</p>
+
+  <div class="step-box">
+    <div class="step-title">① 첫 번째 Ctrl+3 — 영역 선택 화면 진입</div>
+    <ul>
+      <li>화면이 어두워지며 전체 화면 위에 선택 오버레이가 나타납니다.</li>
+      <li>마우스로 드래그하여 캡처할 사각 영역을 지정합니다.</li>
+      <li>이전에 선택한 영역이 있으면 복원되어 가장자리·모서리를 잡아 바로 수정할 수 있습니다.</li>
+      <li>내부 드래그 → 영역 이동 / 가장자리·모서리 드래그 → 크기 조절</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-title">② 두 번째 Ctrl+3 또는 Enter — 캡처 확정</div>
+    <ul>
+      <li>선택한 영역이 즉시 캡처되어 클립보드에 복사됩니다.</li>
+      <li>화면에 <strong>빨간색 테두리 가이드라인</strong>이 남아 고정 영역을 표시합니다.</li>
+    </ul>
+  </div>
+
+  <div class="callout"><strong>ESC</strong> 키를 누르면 캡처를 취소하고 선택 화면을 닫습니다.</div>
+
+  <!-- 빨간 테두리 해제 -->
+  <div class="clear-box">
+    <h4>🔴 빨간색 테두리 해제 방법</h4>
+    <p style="font-size:.88rem; margin-bottom:12px;"><kbd>Ctrl+3</kbd>으로 영역을 확정하면 화면에 빨간 테두리가 남습니다. 아래 방법으로 해제할 수 있습니다.</p>
+    <table>
+      <thead><tr><th>방법</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><kbd>Ctrl+3</kbd> 다시 누르기</td><td>선택 화면 진입 → <kbd>ESC</kbd> 로 취소하면 테두리 사라짐</td></tr>
+        <tr><td><kbd>Ctrl+3</kbd> → 영역 밖 클릭 후 Enter</td><td>빈 영역(크기 0)을 확정하면 테두리 자동 해제</td></tr>
+        <tr><td>프로그램 재시작</td><td>종료 후 다시 실행하면 초기화됨</td></tr>
+      </tbody>
+    </table>
+    <div class="callout tip" style="margin-top:12px;">
+      💡 <strong>가장 빠른 해제:</strong> <kbd>Ctrl+3</kbd> 누름 → <kbd>ESC</kbd> 키
+    </div>
+  </div>
+
+  <h3>4. Ctrl + 좌클릭 — 고정 영역 반복 캡처</h3>
+  <p><kbd>Ctrl+3</kbd>으로 잡아둔 빨간 테두리 영역을 <kbd>Ctrl</kbd> 키를 누른 채 마우스를 클릭할 때마다 즉시 재캡처합니다.<br>
+  PPT 슬라이드나 웹페이지를 넘기면서 같은 위치를 연속으로 찍을 때 매우 유용합니다.</p>
+  <div class="callout warn">빨간 테두리가 설정되지 않은 상태에서는 작동하지 않습니다.</div>
+
+  <h3>5. Ctrl + 4 — 이미지 파일 저장 (PNG)</h3>
+  <p>가장 마지막에 캡처한 이미지를 <kbd>Screenshots/capture_YYYYMMDD_HHMMSS.png</kbd> 형식으로 저장합니다.</p>
+  <div class="callout warn">캡처를 한 번도 하지 않은 상태에서는 &ldquo;❌ 저장할 이미지 없음&rdquo; 메시지가 표시됩니다.</div>
+
+  <h3>6. Ctrl + 5 / 6 — 화면 녹화 (MP4 / GIF)</h3>
+  <ul>
+    <li><strong>Ctrl+3</strong>으로 고정 영역을 먼저 설정한 뒤 사용해야 합니다.</li>
+    <li>한 번 누르면 🔴 녹화 시작, 다시 누르면 자동 저장 및 정지됩니다.</li>
+    <li>빨간 테두리 안쪽(테두리 두께 5px 제외)만 깔끔하게 녹화됩니다.</li>
+  </ul>
+  <table style="margin-top:12px;">
+    <thead><tr><th>단축키</th><th>형식</th><th>저장 폴더</th></tr></thead>
+    <tbody>
+      <tr><td><kbd>Ctrl + 5</kbd></td><td>MP4 동영상</td><td><code>Recordings/</code></td></tr>
+      <tr><td><kbd>Ctrl + 6</kbd></td><td>GIF 애니메이션</td><td><code>Recordings/</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- ══ 기타 기능 ══ -->
+<section>
+  <h2>⚙️ 기타 기능</h2>
+
+  <h3>녹화 FPS 설정</h3>
+  <p>리모컨의 <strong>[녹화 프레임]</strong> 버튼을 클릭하여 10 FPS ↔ 30 FPS를 전환합니다.</p>
+  <div class="fps-row">
+    <div class="fps-card">
+      <div class="fps-label">10 FPS (기본)</div>
+      <div class="fps-desc">파일 용량 최소화.<br>문서·메신저 첨부에 적합.</div>
+    </div>
+    <div class="fps-card">
+      <div class="fps-label">30 FPS</div>
+      <div class="fps-desc">부드러운 움직임.<br>고화질 영상이 필요할 때.</div>
+    </div>
+  </div>
+
+  <h3>창 숨기기 / 다시 열기</h3>
+  <ul>
+    <li>타이틀바의 <strong><code>—</code></strong> 버튼 또는 <kbd>Ctrl+0</kbd>으로 리모컨 창을 숨깁니다.</li>
+    <li>숨긴 상태에서도 모든 단축키는 정상 작동합니다.</li>
+    <li><kbd>Ctrl+0</kbd>을 다시 누르면 창이 다시 나타납니다.</li>
+  </ul>
+</section>
+
+<hr>
+
+<!-- ══ 특장점 ══ -->
+<section>
+  <h2>🚀 특장점</h2>
+  <div class="feature-list">
+    <div class="feature-item">
+      <div class="num">1</div>
+      <div class="body">
+        <strong>완벽한 클립보드 호환 (VDI/원격 최적화)</strong>
+        <p>캡처 이미지는 최적화된 비트맵(DIB) 포맷으로 클립보드에 복사됩니다. 사내 메신저, 원격 데스크톱(VDI), 엑셀/파워포인트 등 어디서든 <kbd>Ctrl+V</kbd>로 원본 화질 그대로 붙여넣기 가능합니다.</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="num">2</div>
+      <div class="body">
+        <strong>스마트 영역 수정</strong>
+        <p><kbd>Ctrl+3</kbd>을 다시 누르면 이전에 잡아둔 영역이 그대로 복원되어 크기·위치를 미세 조정할 수 있습니다.</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="num">3</div>
+      <div class="body">
+        <strong>깔끔한 화면 녹화</strong>
+        <p>빨간 테두리는 영상 결과물에 포함되지 않습니다. 테두리 두께(5px)만큼 안쪽을 자동 크롭하여 완전히 깔끔한 영상만 저장합니다.</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="num">4</div>
+      <div class="body">
+        <strong>안전한 좌클릭 캡처</strong>
+        <p>반드시 <kbd>Ctrl</kbd>을 누른 상태에서만 클릭 캡처가 작동하므로 평상시 업무 중 실수로 발동하지 않습니다.</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="num">5</div>
+      <div class="body">
+        <strong>완벽한 스텔스 모드</strong>
+        <p><kbd>Ctrl+0</kbd> 또는 <code>—</code> 버튼으로 창을 완전히 숨긴 채 단축키만으로 모든 기능을 사용할 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  ScrCapture Pro &nbsp;|&nbsp; 사용 설명서 &nbsp;|&nbsp; 2026
+</footer>
+
+</div><!-- /container -->
+</body>
+</html>
